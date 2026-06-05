@@ -28,7 +28,8 @@ from fastapi import APIRouter, HTTPException, status
 from lpi import store
 from lpi.models import DeleteResponse, Goal, GoalCreate, GoalUpdate, SmilePhase
 from lpi.smile import validate_phase_transition
-from lpi.utils.logging import log_transition
+from lpi.utils.logging import log_transition, phase_transition_logs
+
 
 router = APIRouter()
 
@@ -80,6 +81,9 @@ def list_goals(
 
 
 # ── GET /api/v1/goals/{goal_id} ───────────────────────────────────────────────
+@router.get("/transition-logs")
+def get_transition_logs():
+    return phase_transition_logs
 
 @router.get("/{goal_id}", response_model=Goal)
 def get_goal(goal_id: str) -> Goal:

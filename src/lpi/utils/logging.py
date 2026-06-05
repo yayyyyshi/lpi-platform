@@ -28,13 +28,21 @@ def log_transition(
     Phase 3: Yashika replaces this body with a Supabase insert — no
              other file needs to change when that swap happens.
     """
-    phase_transition_logs.append({
+
+    entry = {
         "goal_id": goal_id,
         "from_phase": str(from_phase),
         "to_phase": str(to_phase),
         "transitioned_at": datetime.now(timezone.utc).isoformat(), # noqa: UP017
         "user_id": user_id,
-    })
+    }
+
+    # in-memory log
+    phase_transition_logs.append(entry)
+
+    # file log
+    with open("transition_logs.txt", "a") as f:
+        f.write(f"{entry}\n")
 
 
 def clear_transition_logs() -> None:
